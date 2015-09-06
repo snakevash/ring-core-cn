@@ -74,7 +74,16 @@
     (is (= (body-string {:body (string-input-stream "baz")})
            "baz"))))
 
+;; 测试路径上下文
 (deftest test-in-context?
   (is (in-context? {:uri "/foo/bar"}
                    "/foo"))
   (is (not (in-context? {:uri "/foo/bar"} "/bar"))))
+
+;; 测试设置上下文
+(deftest test-set-context
+  (is (= (set-context {:uri "/foo/bar"} "/foo")
+         {:uri "/foo/bar"
+          :context "/foo"
+          :path-info "/bar"}))
+  (is (thrown? AssertionError (set-context {:uri "/foo/bar"} "/bar"))))
